@@ -43,22 +43,26 @@ class ApiController extends Controller
 
     public function register()
     {
-        $this->validate(request(), [
-            'username' => 'required',
-            'password' => 'required',
-            'email' => 'required',
-            'license' => 'required'     
-        ]);
+        try {
 
-        $user = ProgramUser::create([
-            'program_id' => $this->getIdFromClaim(request()->header('jwt')),
-            'username' => request('username'),
-            'password' => bcrypt(request('password')),
-            'email' => request('email'),
-            'expires' => \Carbon\Carbon::now()->addWeeks($this->_grabLicense(request('license'), request()->header('jwt'))[0]->expires)
-        ]);
+            $this->validate(request(), [
+                'username' => 'required',
+                'password' => 'required',
+                'email' => 'required',
+                'license' => 'required'     
+            ]);
 
-        return json_encode(array("success" => true));
+            $user = ProgramUser::create([
+                'program_id' => $this->getIdFromClaim(request()->header('jwt')),
+                'username' => request('username'),
+                'password' => bcrypt(request('password')),
+                'email' => request('email'),
+                'expires' => \Carbon\Carbon::now()->addWeeks($this->_grabLicense(request('license'), request()->header('jwt'))[0]->expires)
+            ]);
+            return json_encode(array("success" => true));
+        } catch (\Exception $ex) {
+            return json_encode(array("success" => false, "error" => "invalid_license"));
+        }
     }
 
     public function grabUser($user_id)
