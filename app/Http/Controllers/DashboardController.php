@@ -18,4 +18,9 @@ class DashboardController extends Controller
         
     	return view('dashboard.index', compact('programs'));
     }
+
+    public function download()
+	{
+    	return view('dashboard.download');
+    }
 }

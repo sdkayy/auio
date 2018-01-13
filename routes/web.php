@@ -25,6 +25,8 @@ Route::get('/logout', 'SessionsController@destroy')->name('logout');
 
 Route::get('/home', 'DashboardController@index')->name('home');
 
+Route::get('/download', 'DashboardController@download')->name('download');
+
 Route::get('/programs/{program_id}', 'ProgramController@index');
 Route::post('/programs/create', 'ProgramController@store');
 Route::post('/programs/{program_id}/license/create', 'LicenseController@store');
