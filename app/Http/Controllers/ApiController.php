@@ -27,7 +27,7 @@ class ApiController extends Controller
             $user = ProgramUser::where('username', request('username'))->where('program_id', $this->getIdFromClaim(request()->header('jwt')))->get();
             if(count($user) > 0) 
             {
-                $user = ProgramUser::where('username', request('username'))->where('program_id', $this->getIdFromClaim(request()->header('jwt')))->first();
+                $user = ProgramUser::where('username', request('username'))->where('program_id', $this->getIdFromClaim(request()->header('jwt')))->get()[0];
                 if(\Hash::check(request('password'), $user->password))
                 {
                     echo $user->get()[0]->toJson();
