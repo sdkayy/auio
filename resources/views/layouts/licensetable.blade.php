@@ -6,7 +6,7 @@
 <td>{{ $license->expires }} Weeks</td>
 <td>{{ $license->created_at->toFormattedDateString() }}</td>
 <td>
-  <form method="POST" action="/license/{{ $license->id }}/delete">
+  <form method="POST" action="/programs/{{ $id }}/license/{{ $license->id }}/delete">
   	{{ csrf_field() }}
   	<input type="hidden" name="user_id" value="{{ auth()->user()->id }}" />
   	<button class="w3-button w3-red" type="submit">Delete License</button>

@@ -20,6 +20,7 @@ class CreateProgramUsersTable extends Migration
             $table->string('password');
             $table->string('email');
             $table->timestamp('expires');
+            $table->integer('special')->default(0);
             $table->boolean('banned')->default(false);
             $table->timestamps();
             $table->softDeletes();

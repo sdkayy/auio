@@ -19,6 +19,7 @@ class CreateLicensesTable extends Migration
             $table->string('code');
             $table->integer('expires');
             $table->integer('special');
+            $table->integer('used')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

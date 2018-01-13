@@ -7,5 +7,9 @@
 <td>{{ $user->created_at->toFormattedDateString() }}</td>
 <td>{{ $user->expires->toFormattedDateString() }}</td>
 <td>
-  <a onclick="" class="w3-button sdk">Manage</a>
+  <form method="POST" action="/programs/{{ $id }}/users/{{ $user->id }}/delete">
+  	{{ csrf_field() }}
+  	<input type="hidden" name="user_id" value="{{ auth()->user()->id }}" />
+  	<button class="w3-button w3-red" type="submit">Delete User</button>
+  </form>
 </td>

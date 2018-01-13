@@ -59,6 +59,10 @@ class ApiController extends Controller
                 'email' => request('email'),
                 'expires' => \Carbon\Carbon::now()->addWeeks($this->_grabLicense(request('license'), request()->header('jwt'))[0]->expires)
             ]);
+
+            $license = License::where('code', request('license'))->where('program_id', $this->getIdFromClaim(request()->header('jwt')))->where('used', 0)->first();
+            $license->used = 1;
+            $license->save();
             return json_encode(array("success" => true));
         } catch (\Exception $ex) {
             return json_encode(array("success" => false, "error" => "invalid_license"));
@@ -108,7 +112,7 @@ class ApiController extends Controller
     {
         if($this->verifyJTW(request()->header('jwt'))) 
         {
-    	   $license = License::where('id', $license_id)->where('program_id', $this->getIdFromClaim(request()->header('jwt')))->get()->toJson();
+    	   $license = License::where('id', $license_id)->where('program_id', $this->getIdFromClaim(request()->header('jwt')))->where('used', 0)->get()->toJson();
     	   echo $license;
         }
         else 
@@ -121,7 +125,7 @@ class ApiController extends Controller
     {
         if($this->verifyJTW($token)) 
         {
-           $license = License::where('code', $license)->where('program_id', $this->getIdFromClaim($token))->get();
+           $license = License::where('code', $license)->where('program_id', $this->getIdFromClaim($token))->where('used', 0)->get();
            return $license;
         }
         else 

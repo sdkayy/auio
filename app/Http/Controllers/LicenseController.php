@@ -30,16 +30,17 @@ class LicenseController extends Controller
                 'program_id' => $id,
                 'code' => ($prefix != '' ? $prefix . '-' . str_random(25 - strlen($prefix)) : str_random(25)),
                 'expires' => $license_length,
-                'special' => 0
+                'special' => 0,
+                'used' => 0
             ]);
         }
 
         return back();
     }
 
-    public function delete($id)
+    public function delete($program_id, $license_id)
     {
-        if(License::destroy($id))
+        if($licenses = auth()->user()->programs()->find($program_id)->licenses()->find($license_id)->delete())
             return back();
         else
             return back()->withErros([

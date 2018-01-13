@@ -30,7 +30,8 @@ Route::get('/download', 'DashboardController@download')->name('download');
 Route::get('/programs/{program_id}', 'ProgramController@index');
 Route::post('/programs/create', 'ProgramController@store');
 Route::post('/programs/{program_id}/license/create', 'LicenseController@store');
-Route::post('/license/{license_id}/delete', 'LicenseController@delete');
+Route::post('/programs/{program_id}/license/{license_id}/delete', 'LicenseController@delete');
+Route::post('/programs/{program_id}/users/{user_id}/delete', 'ProgramUserController@delete');
 
 Route::get('/settings', 'SettingsController@index');
 Route::post('/settings/save', 'SettingsController@update');
