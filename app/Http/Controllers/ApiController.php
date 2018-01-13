@@ -24,13 +24,13 @@ class ApiController extends Controller
                 'password' => 'required',
             ]);
 
-            $user = ProgramUser::where('username', request('username'))->where('program_id', $this->getIdFromClaim(request()->header('jwt')))->get();
-            if(count($user) > 0) 
+            $user1 = ProgramUser::where('username', request('username'))->where('program_id', $this->getIdFromClaim(request()->header('jwt')))->get();
+            if(count($user1) > 0) 
             {
                 $user = ProgramUser::where('username', request('username'))->where('program_id', $this->getIdFromClaim(request()->header('jwt')))->get()[0];
                 if(\Hash::check(request('password'), $user->password))
                 {
-                    echo $user->get()[0]->toJson();
+                    echo $user->toJson();
                 } 
                 else 
                 {
