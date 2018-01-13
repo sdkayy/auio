@@ -8,12 +8,14 @@
       <div class="w3-full w3-container">
         <div class="w3-card-4">
           <header class="sdk w3-container">
-            <h2 style="font-weight: 200;">Applications</h2>
+            <h2 style="font-weight: 200;">Downloads</h2>
           </header>
 
           <div class="w3-container">
-            <p>Dowload the class from below</p>
-            <a href="BETA.01.zip">BETA.01.zip</a>
+            <div class="w3-padding">
+              <p>Dowload the class from below</p>
+              <a href="BETA.01.zip">BETA.01.zip</a>
+            </div>
           </div>
         </div>
       </div>

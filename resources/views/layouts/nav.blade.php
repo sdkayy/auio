@@ -38,10 +38,11 @@
 	@if(Auth::check())
         <a href="/home" class="w3-bar-item w3-button">Dashboard</a>
         <a href="/settings" class="w3-bar-item w3-button">Account Settings</a>
+        <a href="/download" class="w3-bar-item w3-button">Download</a>
+        <a href="/logout" class="w3-bar-item w3-button">Logout</a>
     @else 
         <a href="/login" class="w3-bar-item w3-button">Login</a>
         <a href="/register" class="w3-bar-item w3-button">Register</a>
     @endif
-    <a href="/logout" class="w3-bar-item w3-button">Logout</a>
   </div>
 </body>
