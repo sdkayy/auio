@@ -13,7 +13,7 @@
 
           <div class="w3-container">
             <p>Dowload the class from below</p>
-            <a href="test.zip">Test.zip</a>
+            <a href="BETA.01.zip">BETA.01.zip</a>
           </div>
         </div>
       </div>
