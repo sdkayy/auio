@@ -19,6 +19,7 @@ class CreateUserFieldsTable extends Migration
             $table->integer('program_id');
             $table->string('field_name');
             $table->text('field_value');
+            $table->boolean('encrypted')->default(false);
             $table->timestamps();
         });
     }
