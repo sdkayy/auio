@@ -39,7 +39,7 @@ Route::post('/settings/save', 'SettingsController@update');
 /* API ROUTES */
 Route::post('/api/login', 'ApiController@login'); // Login WORKS
 Route::post('/api/register', 'ApiController@register'); // Register 
-Route::get('/api/user/{user_id}', 'ApiController@grabUser'); // Get user info WORKS
+Route::get('/api/user', 'ApiController@grabUser'); // Get user info WORKS
 Route::get('/api/license/{license_id}', 'ApiController@grabLicense'); // Get license info such as used, program_id etc.
 Route::get('/api/program/{program_id}', 'ApiController@grabProgram'); // Get program info UNRELEASED
 Route::post('/api/authenticate', 'ApiController@authenticate'); // Authenticate a token WORKS

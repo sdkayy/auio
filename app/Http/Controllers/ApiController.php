@@ -17,7 +17,7 @@ class ApiController extends Controller
 {
     public function login()
     {
-        if($this->verifyJTW(request()->header('jwt')))
+        if($this->verifyJWT(request()->header('jwt')))
         {
             $this->validate(request(), [
                 'username' => 'required',
@@ -30,7 +30,7 @@ class ApiController extends Controller
                 $user = ProgramUser::where('username', request('username'))->where('program_id', $this->getIdFromClaim(request()->header('jwt')))->get()[0];
                 if(\Hash::check(request('password'), $user->password))
                 {
-                    echo $user->toJson();
+                    return json_encode(array("jwt" => $this->generateShortTerm($user->id, $user->username, $user->program_id), "user" => $user));
                 } 
                 else 
                 {
@@ -77,12 +77,12 @@ class ApiController extends Controller
         }
     }
 
-    public function grabUser($user_id)
+    public function grabUser()
     {
-        if($this->verifyJTW(request()->header('jwt'))) 
+        if($this->verifyJWT(request()->header('jwt'))) 
         {
-    	   $user = ProgramUser::where('id', $user_id)->where('program_id', $this->getIdFromClaim(request()->header('jwt')))->get()->toJson();
-    	   echo $user;
+    	   $user = ProgramUser::where('id', $this->getUserIdFromClaim(request()->header('jwt')))->where('program_id', $this->getIdFromClaim(request()->header('jwt')))->get()[0]->toJson();
+    	   return $user;
         }
         else 
         {    
@@ -92,7 +92,7 @@ class ApiController extends Controller
 
     public function getFields($user_id) 
     {
-        if($this->verifyJTW(request()->header('jwt'))) 
+        if($this->verifyJWT(request()->header('jwt'))) 
         {
            $userfields = ProgramUser::where('id', $user_id)->where('program_id', $this->getIdFromClaim(request()->header('jwt')))->get()[0]->fields()->get()->toJson();
            echo $userfields;
@@ -105,7 +105,7 @@ class ApiController extends Controller
 
     public function getField($user_id, $field_name) 
     {
-        if($this->verifyJTW(request()->header('jwt'))) 
+        if($this->verifyJWT(request()->header('jwt'))) 
         {
            $userfield = ProgramUser::where('id', $user_id)->where('program_id', $this->getIdFromClaim(request()->header('jwt')))->get()[0]->fields()->where('field_name', $field_name)->get()->toJson();
            echo $userfield;
@@ -118,7 +118,7 @@ class ApiController extends Controller
 
     public function grabLicense($license_id)
     {
-        if($this->verifyJTW(request()->header('jwt'))) 
+        if($this->verifyJWT(request()->header('jwt'))) 
         {
     	   $license = License::where('id', $license_id)->where('program_id', $this->getIdFromClaim(request()->header('jwt')))->where('used', 0)->get()->toJson();
     	   echo $license;
@@ -131,7 +131,7 @@ class ApiController extends Controller
 
     private function _grabLicense($license, $token) 
     {
-        if($this->verifyJTW($token)) 
+        if($this->verifyJWT($token)) 
         {
            $license = License::where('code', $license)->where('program_id', $this->getIdFromClaim($token))->where('used', 0)->get();
            return $license;
@@ -145,7 +145,7 @@ class ApiController extends Controller
     public function grabProgram($program_id)
     {   
         dd("x");
-        if($this->verifyJTW(request()->header('jwt'))) 
+        if($this->verifyJWT(request()->header('jwt'))) 
         {
     	   $program = Program::find($program_id)->get()->toJson();
 		   dd($program);
@@ -169,7 +169,7 @@ class ApiController extends Controller
             $token->addClaim(new Claim\IssuedAt(new \DateTime('now')));
 
             $jwt = new Jwt\Jwt();
-            $algorithm = new Algorithm\Hs256('authed_io');
+            $algorithm = new Algorithm\Hs256('DtAVUkMw0Q');
             $encryption = Encryption\Factory::create($algorithm);
             $serializedToken = $jwt->serialize($token, $encryption);
             echo $serializedToken;
@@ -178,11 +178,36 @@ class ApiController extends Controller
         }
     }
 
+    public function generateShortTerm($user_id, $username, $program_id) 
+    {
+        $token = new \Emarref\Jwt\Token();
+        $token->addClaim(new Claim\PrivateClaim('name', $username));
+        $token->addClaim(new Claim\PrivateClaim('user_id', $user_id));
+        $token->addClaim(new Claim\PrivateClaim('program_id', $program_id));
+        //Basic Claims
+        $token->addClaim(new Claim\Expiration(new \DateTime('30 Seconds')));
+        $token->addClaim(new Claim\Issuer('authed_io'));
+        $token->addClaim(new Claim\IssuedAt(new \DateTime('now')));
+
+        $jwt = new Jwt\Jwt();
+        $algorithm = new Algorithm\Hs256('DtAVUkMw0Q');
+        $encryption = Encryption\Factory::create($algorithm);
+        $serializedToken = $jwt->serialize($token, $encryption);
+        return $serializedToken;
+    }
+
     public function check()
     {
-        if($this->verifyJTW(request()->header('jwt'))) 
+        if($this->verifyJWT(request()->header('jwt'))) 
         {
-            return json_encode(array("success" => true, "info" => "Sam!_That_is_actually_ruby!"));
+            if($this->verifyJWT(request('token'))) {
+                $username = $this->getNameFromClaim(request('token'));
+                $user_id = $this->getUserIdFromClaim(request('token'));
+                $program = $this->getIdFromClaim(request('token'));
+                return json_encode(array("success" => true, "info" => "Sam!_That_is_actually_ruby!", "jwt" => $this->generateShortTerm($user_id, $username,$program)));
+            } else {
+                return json_encode(array("success" => false, "info" => "Sam!_That_is_not_ruby!"));
+            }
         } 
         else 
         {    
@@ -190,11 +215,11 @@ class ApiController extends Controller
         }
     }   
 
-    public function verifyJTW($token)
+    public function verifyJWT($token)
     {
         try 
         {
-            $algorithm = new Algorithm\Hs256('authed_io');
+            $algorithm = new Algorithm\Hs256('DtAVUkMw0Q');
             $encryption = Encryption\Factory::create($algorithm);
             $jwt = new Jwt\Jwt();
 
@@ -210,16 +235,47 @@ class ApiController extends Controller
         {
             return false;
         }
+        catch (\Emarref\Jwt\Exception\ExpiredException $eex)
+        {
+            $expired = new \Carbon\Carbon($eex->expiredAt->format(DATE_ISO8601));
+            $current = \Carbon\Carbon::now();
+            $diff = $current->diffInSeconds($expired);
+            if($diff < 5) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 
     public function getIdFromClaim($token) 
     {
-        $algorithm = new Algorithm\Hs256('authed_io');
+        $algorithm = new Algorithm\Hs256('DtAVUkMw0Q');
         $encryption = Encryption\Factory::create($algorithm);
         $jwt = new Jwt\Jwt();
 
         $token = $jwt->deserialize($token);
         return $token->payload->findClaimByName("program_id")->getValue();
+    }
+
+    public function getUserIdFromClaim($token) 
+    {
+        $algorithm = new Algorithm\Hs256('DtAVUkMw0Q');
+        $encryption = Encryption\Factory::create($algorithm);
+        $jwt = new Jwt\Jwt();
+
+        $token = $jwt->deserialize($token);
+        return $token->payload->findClaimByName("user_id")->getValue();
+    }
+
+    public function getNameFromClaim($token) 
+    {
+        $algorithm = new Algorithm\Hs256('DtAVUkMw0Q');
+        $encryption = Encryption\Factory::create($algorithm);
+        $jwt = new Jwt\Jwt();
+
+        $token = $jwt->deserialize($token);
+        return $token->payload->findClaimByName("name")->getValue();
     }
 
 }
