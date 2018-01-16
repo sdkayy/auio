@@ -30,6 +30,14 @@ class ApiController extends Controller
                 $user = ProgramUser::where('username', request('username'))->where('program_id', $this->getIdFromClaim(request()->header('jwt')))->get()[0];
                 if(\Hash::check(request('password'), $user->password))
                 {
+                    $expires = new \Carbon\Carbon($user->expires);
+                    $current = \Carbon\Carbon::now();
+                    $diff = $current->diffInSeconds($expires);
+                    if($diff <= 0) {
+                        $user->expired = 1;
+                    } else {
+                        $user->expired = 0;
+                    }
                     return json_encode(array("jwt" => $this->generateShortTerm($user->id, $user->username, $user->program_id), "user" => $user));
                 } 
                 else 
