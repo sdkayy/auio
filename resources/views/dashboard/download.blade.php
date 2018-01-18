@@ -14,7 +14,7 @@
           <div class="w3-container">
             <div class="w3-padding">
               <p>Dowload the class from below</p>
-              <a href="BETA.02.zip">BETA.02.zip</a>
+              <a href="BETA.03-Sec.zip">BETA.03-Sec.zip (sha1: 6172F09675F46C60F21E3246DC8B1AC59FF522B88ABE453D2D0A416CB377F672)</a>
             </div>
           </div>
         </div>
