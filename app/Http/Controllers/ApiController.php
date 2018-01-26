@@ -73,8 +73,8 @@ class ApiController extends Controller
                 'username' => request('username'),
                 'password' => bcrypt(request('password')),
                 'email' => request('email'),
+                'expires' => \Carbon\Carbon::now()->addWeeks($this->_grabLicense(request('license'), request()->header('jwt'))[0]->expires),
                 'special' => $this->_grabLicense(request('license'), request()->header('jwt'))[0]->special,
-                'expires' => \Carbon\Carbon::now()->addWeeks($this->_grabLicense(request('license'), request()->header('jwt'))[0]->expires)
             ]);
 
             $license = License::where('code', request('license'))->where('program_id', $this->getIdFromClaim(request()->header('jwt')))->where('used', 0)->first();
