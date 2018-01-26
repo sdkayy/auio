@@ -11,7 +11,7 @@ class ProgramUser extends Model
 		'password'
 	];
     protected $fillable = [
-        'program_id', 'username', 'password', 'expires', 'email', 'created_id', 'updated_id'
+        'program_id', 'username', 'password', 'expires', 'special', 'email', 'created_id', 'updated_id'
     ];
     public function program()
     {
