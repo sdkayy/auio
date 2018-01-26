@@ -17,6 +17,10 @@
         <input class="w3-input" type="number" name="license_length" required>
       </div>
       <div class="w3-section">
+        <label>Special (Level)</label>
+        <input class="w3-input" type="number" name="license_level" required>
+      </div>
+      <div class="w3-section">
         <label>Amount to Generate (1-10)</label>
         <input class="w3-input" type="number" name="license_amount" required>
       </div>

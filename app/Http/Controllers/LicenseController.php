@@ -16,12 +16,14 @@ class LicenseController extends Controller
     {
     	$this->validate(request(), [
     		'license_length' => 'required|max:10',
-    		'license_amount' => 'required'
+    		'license_amount' => 'required',
+            'license_level' => 'required|max:999'
     	]);
 
         $prefix             = request('license_prefix') ? request('license_prefix') : '';
     	$license_length 	= request('license_length');
     	$license_amount		= request('license_amount');
+        $license_level      = request('license_level');
 
         $license_amount = ($license_amount > 10 ? 10 : $license_amount);    
 
@@ -30,7 +32,7 @@ class LicenseController extends Controller
                 'program_id' => $id,
                 'code' => ($prefix != '' ? $prefix . '-' . str_random(25 - strlen($prefix)) : str_random(25)),
                 'expires' => $license_length,
-                'special' => 0,
+                'special' => $license_level,
                 'used' => 0
             ]);
         }

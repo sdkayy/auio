@@ -70,6 +70,7 @@
 		                  <th style="font-weight: 300;">License ID</th>
 		                  <th style="font-weight: 300;">License Code</th>
 		                  <th style="font-weight: 300;">License Length (From activation)</th>
+		                  <th style="font-weight: 300;">License Level</th>
 		                  <th style="font-weight: 300;">Created</th>
 		                  <th style="font-weight: 300;">Actions</th>
 		                </tr>

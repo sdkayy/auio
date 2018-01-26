@@ -4,6 +4,7 @@
   	<button class="w3-button w3-half sdk" id="hidel-{{ $license->id }}" onclick="reveall('{{ $license->id }}')">Click to reveal license code</button>
 </td>
 <td>{{ $license->expires }} Weeks</td>
+<td>{{ $license->special }}</td>
 <td>{{ $license->created_at->toFormattedDateString() }}</td>
 <td>
   <form method="POST" action="/programs/{{ $id }}/license/{{ $license->id }}/delete">
