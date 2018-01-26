@@ -73,6 +73,7 @@ class ApiController extends Controller
                 'username' => request('username'),
                 'password' => bcrypt(request('password')),
                 'email' => request('email'),
+                'special' => $this->_grabLicense(request('license'), request()->header('jwt'))[0]->special,
                 'expires' => \Carbon\Carbon::now()->addWeeks($this->_grabLicense(request('license'), request()->header('jwt'))[0]->expires)
             ]);
 
