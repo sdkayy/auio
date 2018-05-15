@@ -217,7 +217,7 @@ class ApiController extends Controller
             $token->addClaim(new Claim\IssuedAt(new \DateTime('now')));
 
             $jwt = new Jwt\Jwt();
-            $algorithm = new Algorithm\Hs256('n9w@@&Hat7c$Ws62w3xwU4GD');
+            $algorithm = new Algorithm\Hs256('DtAVUkMw0Q');
             $encryption = Encryption\Factory::create($algorithm);
             $serializedToken = $jwt->serialize($token, $encryption);
             echo $serializedToken;
@@ -238,7 +238,7 @@ class ApiController extends Controller
         $token->addClaim(new Claim\IssuedAt(new \DateTime('now')));
 
         $jwt = new Jwt\Jwt();
-        $algorithm = new Algorithm\Hs256('n9w@@&Hat7c$Ws62w3xwU4GD');
+        $algorithm = new Algorithm\Hs256('DtAVUkMw0Q');
         $encryption = Encryption\Factory::create($algorithm);
         $serializedToken = $jwt->serialize($token, $encryption);
         return $serializedToken;
@@ -267,7 +267,7 @@ class ApiController extends Controller
     {
         try 
         {
-            $algorithm = new Algorithm\Hs256('n9w@@&Hat7c$Ws62w3xwU4GD');
+            $algorithm = new Algorithm\Hs256('DtAVUkMw0Q');
             $encryption = Encryption\Factory::create($algorithm);
             $jwt = new Jwt\Jwt();
 
@@ -298,7 +298,7 @@ class ApiController extends Controller
 
     public function getIdFromClaim($token) 
     {
-        $algorithm = new Algorithm\Hs256('n9w@@&Hat7c$Ws62w3xwU4GD');
+        $algorithm = new Algorithm\Hs256('DtAVUkMw0Q');
         $encryption = Encryption\Factory::create($algorithm);
         $jwt = new Jwt\Jwt();
 
@@ -308,7 +308,7 @@ class ApiController extends Controller
 
     public function getUserIdFromClaim($token) 
     {
-        $algorithm = new Algorithm\Hs256('n9w@@&Hat7c$Ws62w3xwU4GD');
+        $algorithm = new Algorithm\Hs256('DtAVUkMw0Q');
         $encryption = Encryption\Factory::create($algorithm);
         $jwt = new Jwt\Jwt();
 
@@ -318,7 +318,7 @@ class ApiController extends Controller
 
     public function getNameFromClaim($token) 
     {
-        $algorithm = new Algorithm\Hs256('n9w@@&Hat7c$Ws62w3xwU4GD');
+        $algorithm = new Algorithm\Hs256('DtAVUkMw0Q');
         $encryption = Encryption\Factory::create($algorithm);
         $jwt = new Jwt\Jwt();
 
