@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Program;
 use App\ProgramUser;
-
+use Carbon\Carbon;
 class ProgramController extends Controller
 {
 	public function __construct()
@@ -61,8 +61,9 @@ class ProgramController extends Controller
 
             $json = json_decode($result);
             foreach($json->{'users'} as $user) {
+                echo($user->expires);
                 if($user->expires == "0") {
-                    $expires = ;
+                    $expires = Carbon::now(1)->addYears(5)->toDateTimeString();
                 } else {
                     $expires = Carbon::createFromTimestamp($user->expires)->toDateTimeString();
                 }
@@ -76,6 +77,7 @@ class ProgramController extends Controller
                 ]);
             }
             $program -> has_migrated = true;
+            $program->save();
             return back();
         } else {
             return back();
