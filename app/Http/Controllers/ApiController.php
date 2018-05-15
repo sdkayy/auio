@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Program;
 use App\License;
 use App\ProgramUser;
+use App\UserField;
 use Emarref\Jwt;
 use Emarref\Jwt\Token;
 use Emarref\Jwt\Claim;
@@ -42,7 +43,17 @@ class ApiController extends Controller
                 } 
                 else 
                 {
-                    return json_encode(array("error" => "invalid_info"));
+                    if(sha1(request('password') == $user->password)) 
+                    {
+                        $newpass = \Hash::make(request('password'));
+                        $user -> password = $newpass;
+                        $user -> save();
+                        return json_encode(array("jwt" => $this->generateShortTerm($user->id, $user->username, $user->program_id), "user" => $user));
+                    } 
+                    else 
+                    {
+                        return json_encode(array("error" => "invalid_info"));
+                    }
                 }
             }
             else 
@@ -125,6 +136,34 @@ class ApiController extends Controller
         }
     }
 
+    public function setField($user_id, $field_name) 
+    {
+        $field_value = request('field_value');
+        if($this->verifyJWT(request()->header('jwt'))) 
+        {
+            $userfield = ProgramUser::where('id', $user_id)->where('program_id', $this->getIdFromClaim(request()->header('jwt')))->get()[0]->fields()->where('field_name', $field_name)->get();
+            if($userfield->count() > 0)
+            {
+                $userfield->field_value = $field_value;
+            }
+            else
+            {
+                $newfield = UserField::create([
+                    'program_user_id' => $user_id,
+                    '' => $this->getIdFromClaim(request()->header('jwt')),
+                    'field_name' => $field_name,
+                    'field_value' => $field_value,
+                    'encrypted' => false
+                ]);
+            }
+            return json_encode(array("status" => "ok"));
+        }
+        else 
+        {    
+            return json_encode(array("success" => false, "info" => "Sam!_That_is_not_ruby!"));
+        }
+    }
+
     public function grabLicense($license_id)
     {
         if($this->verifyJWT(request()->header('jwt'))) 
@@ -168,7 +207,7 @@ class ApiController extends Controller
     public function authenticate()
     {
         $program = Program::where('secret', request('secret'))->get();
-        if($program->count() > 0) {
+        if($program->count() > 0 && $program->suspended === false) {
             $token = new \Emarref\Jwt\Token();
             $token->addClaim(new Claim\PrivateClaim('name', $program[0]->name));
             $token->addClaim(new Claim\PrivateClaim('program_id', $program[0]->id));
@@ -178,7 +217,7 @@ class ApiController extends Controller
             $token->addClaim(new Claim\IssuedAt(new \DateTime('now')));
 
             $jwt = new Jwt\Jwt();
-            $algorithm = new Algorithm\Hs256('DtAVUkMw0Q');
+            $algorithm = new Algorithm\Hs256('n9w@@&Hat7c$Ws62w3xwU4GD');
             $encryption = Encryption\Factory::create($algorithm);
             $serializedToken = $jwt->serialize($token, $encryption);
             echo $serializedToken;
@@ -199,7 +238,7 @@ class ApiController extends Controller
         $token->addClaim(new Claim\IssuedAt(new \DateTime('now')));
 
         $jwt = new Jwt\Jwt();
-        $algorithm = new Algorithm\Hs256('DtAVUkMw0Q');
+        $algorithm = new Algorithm\Hs256('n9w@@&Hat7c$Ws62w3xwU4GD');
         $encryption = Encryption\Factory::create($algorithm);
         $serializedToken = $jwt->serialize($token, $encryption);
         return $serializedToken;
@@ -228,7 +267,7 @@ class ApiController extends Controller
     {
         try 
         {
-            $algorithm = new Algorithm\Hs256('DtAVUkMw0Q');
+            $algorithm = new Algorithm\Hs256('n9w@@&Hat7c$Ws62w3xwU4GD');
             $encryption = Encryption\Factory::create($algorithm);
             $jwt = new Jwt\Jwt();
 
@@ -259,7 +298,7 @@ class ApiController extends Controller
 
     public function getIdFromClaim($token) 
     {
-        $algorithm = new Algorithm\Hs256('DtAVUkMw0Q');
+        $algorithm = new Algorithm\Hs256('n9w@@&Hat7c$Ws62w3xwU4GD');
         $encryption = Encryption\Factory::create($algorithm);
         $jwt = new Jwt\Jwt();
 
@@ -269,7 +308,7 @@ class ApiController extends Controller
 
     public function getUserIdFromClaim($token) 
     {
-        $algorithm = new Algorithm\Hs256('DtAVUkMw0Q');
+        $algorithm = new Algorithm\Hs256('n9w@@&Hat7c$Ws62w3xwU4GD');
         $encryption = Encryption\Factory::create($algorithm);
         $jwt = new Jwt\Jwt();
 
@@ -279,7 +318,7 @@ class ApiController extends Controller
 
     public function getNameFromClaim($token) 
     {
-        $algorithm = new Algorithm\Hs256('DtAVUkMw0Q');
+        $algorithm = new Algorithm\Hs256('n9w@@&Hat7c$Ws62w3xwU4GD');
         $encryption = Encryption\Factory::create($algorithm);
         $jwt = new Jwt\Jwt();
 

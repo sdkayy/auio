@@ -8,7 +8,7 @@ use App\User;
 class Program extends Model
 {
 	protected $fillable = [
-        'user_id', 'name', 'secret', 'requires_auth', 'banned'
+        'user_id', 'name', 'secret', 'requires_auth', 'banned', 'has_migrated'
     ];
 
     protected $hidden = [
@@ -18,6 +18,10 @@ class Program extends Model
 	public function user()
 	{
 		return $this->belongsTo(User::class);
+	}
+
+	public function features() {
+		return $this->hasMany(Features::class);
 	}
 
 	public function programUsers()

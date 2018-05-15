@@ -30,6 +30,12 @@
 		                @endforeach
 		              </tbody>
 		            </table>
+		            <br>
+		            <div class="w3-row-padding">
+		              <div class="w3-full">
+		                <a class="w3-button sdk w3-right" onclick="document.getElementById('migrateUser').style.display='block'"><i class="fa fa-plus-thin" style="font-weight: 200;"></i> Migrate users from BetterSeal</a>
+		              </div>
+		            </div>
 		            {{ 
 		            	$pusers->links()
 		            }}

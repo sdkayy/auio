@@ -28,7 +28,7 @@
               <input class="w3-input" type="email" name="email" required>
             </div>
             <div class="w3-section">
-              {!! Recaptcha::render() !!}
+              {{--{!! Recaptcha::render() !!}--}}
             </div>
             <div class="w3-section">
               <button class="w3-button w3-input w3-full sdk" type="submit">Register</button>

@@ -32,6 +32,8 @@ Route::post('/programs/create', 'ProgramController@store');
 Route::post('/programs/{program_id}/license/create', 'LicenseController@store');
 Route::post('/programs/{program_id}/license/{license_id}/delete', 'LicenseController@delete');
 Route::post('/programs/{program_id}/users/{user_id}/delete', 'ProgramUserController@delete');
+Route::post('/programs/users/transfer', 'ProgramController@transfer');
+Route::post('/porgrams/{program_id}/suspend', 'ProgramController@suspend');
 
 Route::get('/settings', 'SettingsController@index');
 Route::post('/settings/save', 'SettingsController@update');

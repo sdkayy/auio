@@ -24,8 +24,8 @@ class RegistrationController extends Controller
     	$this->validate(request(),[
     		'username' => 'required',
     		'password' => 'required|confirmed',
-    		'email' => 'required|email',
-            'g-recaptcha-response' => 'required|recaptcha'
+    		'email' => 'required|email'//,
+            //'g-recaptcha-response' => 'required|recaptcha'
     	]);
 
     	$user = User::create([
