@@ -45,11 +45,11 @@
     <form class="w3-container" method="POST" action="/programs/users/transfer">
       {{ csrf_field() }}
       <div class="w3-section">
-        <label>Admin Secret</label>
+        <label>Admin Secret (Do not paste with the # infront!)</label>
         <input class="w3-input" type="text" name="app_admin_sec">
       </div>
       <div class="w3-section">
-        <label>Application Secret</label>
+        <label>Application Secret (Application Auth Token)</label>
         <input class="w3-input" type="text" name="app_sec">
       </div>
       <div class="w3-row">
