@@ -63,7 +63,7 @@ class ProgramController extends Controller
             foreach($json->{'users'} as $user) {
                 echo($user->expires);
                 if($user->expires == "0") {
-                    $expires = Carbon::now(1)->addYears(9999)->toDateTimeString();
+                    $expires = Carbon::now(1)->addYears(999)->toDateTimeString();
                 } else {
                     $expires = Carbon::createFromTimestamp($user->expires)->toDateTimeString();
                 }
