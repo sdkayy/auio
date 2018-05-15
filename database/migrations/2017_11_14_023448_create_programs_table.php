@@ -19,7 +19,6 @@ class CreateProgramsTable extends Migration
             $table->string('name');
             $table->string('secret')->unique();
             $table->boolean('requires_auth')->default(true);
-            $table->boolean('suspended')->default(false);
             $table->boolean('banned')->default(false);
             $table->timestamps();
             $table->softDeletes();

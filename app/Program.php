@@ -8,7 +8,7 @@ use App\User;
 class Program extends Model
 {
 	protected $fillable = [
-        'user_id', 'name', 'secret', 'requires_auth', 'banned', 'has_migrated'
+        'user_id', 'name', 'secret', 'suspended', 'requires_auth', 'banned', 'has_migrated'
     ];
 
     protected $hidden = [

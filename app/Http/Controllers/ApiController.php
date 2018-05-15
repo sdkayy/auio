@@ -207,7 +207,7 @@ class ApiController extends Controller
     public function authenticate()
     {
         $program = Program::where('secret', request('secret'))->get();
-        if($program->count() > 0 && $program->suspended === false) {
+        if($program->count() > 0) { //&& $program->suspended === false) {
             $token = new \Emarref\Jwt\Token();
             $token->addClaim(new Claim\PrivateClaim('name', $program[0]->name));
             $token->addClaim(new Claim\PrivateClaim('program_id', $program[0]->id));
