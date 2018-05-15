@@ -61,11 +61,17 @@ class ProgramController extends Controller
 
             $json = json_decode($result);
             foreach($json->{'users'} as $user) {
+                if($user->expires == "0") {
+                    $expires = ;
+                } else {
+                    $expires = Carbon::createFromTimestamp($user->expires)->toDateTimeString();
+                }
                 $newUser = ProgramUser::create([
                     "username" => $user->username,
                     "password" => $user->password,
                     "program_id" => request('program'),
                     "special" => $user->level,
+                    "expires" => $expires,
                     "email" => $user->username . '@fake.com'
                 ]);
             }
